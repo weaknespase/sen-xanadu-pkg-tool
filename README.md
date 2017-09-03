@@ -1,60 +1,71 @@
-# sen-xanadu-pkg-tool
-Simple tool able to unpack or pack again files in format of PKG files used by Tokyo Xanadu and Sen no Kiseki games.
+# toxana-tkit
 
-Requires fresh (>6.0) node.js framework.
+A set of various tools handy in hacking some Vita games resources.
+
+Supported games:
+* Tokyo Xanadu (Falcom)
+    * tx-pkgarg - archive utility, creates and extracts PKG files
+    * tx-tblconv - proprietary spreadsheet format converter (to and from JSON)
+* Utawarerumono (Mask of Deception)
+    * ut-pckarc - archive utility, creates and extracts PCK(SDAT) files
+    * ut-fileconv - texture (TEX) and font (FNT) file format converter (limited texture support, only unpacks raw data)
+        (Automatic format recognition)
+
+## Requirements
+
+* Node.JS 6 or later.
+
+## Installation
+
+    npm i -g git+https://github.com/weaknespase/toxana-tkit.git
 
 ## Usage
-To extract files:
 
-    node pkg_tool.js unpack [-v] [-o directory] [--] input
+All tools usable from command line and contain short in-built usage message. Execute with `-h` to get help.
+Only `*` glob supported at the moment.
 
-where `input` is space-delimited list of package files.
+All files inside `lib` subdirectory desinged to be usable as standalone Node.JS modules, and can be freely used as scripting addons or as parts of other projects.
 
-To pack files back:
-
-    node pkg_tool.js pack [-vfcc] [-o file] [--] file1 file2 ... fileN
-
-where `fileN` also can be a directory, in that case all files from this directory will be packed (but not from subdirectories).
-
-    -f      Overwrite output file.
-    -v      Show progress.
-    -c      Compress files, once for fast compression, two for full compression, three to additionally enable mixed mode.
-    -o      Specify output file/directory.
+# tx-pkgarc
 
 ## Examples
 
-Unpacks contents of book.pkg into `out` directory:
+Unpacks contents of `foo.pkg` into `out` directory:
 
-    node pkg_tool.js unpack -vo out foo.pkg
+    tx-pkgarc unpack -o out foo.pkg
     
 Unpacks contents of several packages into respective folders inside 'out' directory:
 
-    node pkg_tool.js unpack -vo out foo.pkg bar.pkg
+    tx-pkgarc unpack -o out foo.pkg bar.pkg
 
 Packs contents of `bar` directory and `bar.foo` file in `foo.pkg`:
 
-    node pkg_tool.js pack -vo foo.pkg bar bar.foo
+    tx-pkgarc pack -o foo.pkg bar bar.foo
 
-Packs contents of `bar` directory in `foo.pkg` with full compression:
+Packs contents of `bar` directory in `foo.pkg` using compression:
 
-    node pkg_tool.js pack -vcco foo.pkg bar
+    tx-pkgarc pack -co foo.pkg bar
 
-# xanadu-tbl-codec
-Converts *.TBL binary files into JSON and back.
-Together with script bundled somewhat filled configuration file for Tokyo Xanadu, named `xanadu_tlbs.conf`.
+Other archivers follow similar usage pattern.
 
-## Usage
-Convert TBL to JSON:
+# tx-tblconv
 
-    node tbl_codec.js decode [-fv] [-t config] [-o dir] file1 file2 ... fileN
-    
-Convert JSON back to TBL:
+Converts *.TBL binary files into JSON and back. Uses external type definition files to map binary blobs to more human-readable data types.
+By default bundled with built-in configuration for Tokyo Xanadu, it would be used if no external configuration provided.
 
-    node tbl_codec.js encode [-fv] [-o dir] file1 file2 ... fileN
+## Examples
 
-Options:
+Convert Tokyo Xanadu TBL file(s) to JSON: (add -f to overwrite files in output directory)
 
-    -f      Overwrite output files.
-    -v      Show progress.
-    -t      Specify configuration file with types data. Used to map binary payload to human-readable data types.
-    -o      Specify output directory for files, by default files placed in same directory as source files.
+    tx-tblconv decode -o decoded.json text\foobar.tbl
+    tx-tblconv decode -o decoded-text text\*.tbl
+
+Convert JSON representations back:
+
+    tx-tblconv encode -o text\foobar.tbl decoded.json
+    tx-tblconv encode -o text decoded-text\*.tbl
+
+Other converters follow similar usage pattern.
+
+# License
+<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>
