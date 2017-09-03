@@ -1,0 +1,31 @@
+{
+  "name": "toxana-tkit",
+  "version": "1.2.1",
+  "description": "Set of node.js scripts for working with assets of several PSVita games.",
+  "bin": {
+    "tx-pkgarc": "./bin/tx-pkgarc.js",
+    "tx-tblconv": "./bin/tx-tblconv.js",
+    "ut-pckarc": "./bin/ut-pckarc.js",
+    "ut-fileconv": "./bin/ut-fileconv.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weaknespase/toxana-tkit.git"
+  },
+  "keywords": [
+    "falcom",
+    "aquaplus",
+    "tokyo_xanadu",
+    "utawarerumono"
+  ],
+  "author": "weaknespase",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/weaknespase/toxana-tkit/issues"
+  },
+  "homepage": "https://github.com/weaknespase/toxana-tkit#readme",
+  "dependencies": { }
+}
